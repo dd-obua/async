@@ -22,19 +22,23 @@ const writeFilePromise = (to, data) => {
 
 const filePath = `${__dirname}/dog.txt`;
 
-readFilePromise(filePath)
-  .then((data) => {
+const getDogPic = async () => {
+  try {
+    const data = await readFilePromise(filePath);
     console.log(`Breed: ${data}`);
+
     const breed = data.toString().trim();
     const url = `https://dog.ceo/api/breed/${breed}/images/random`;
-    return superagent.get(url);
-  })
-  .then((res) => {
+
+    const res = await superagent.get(url);
     const imgUrl = res.body.message;
     console.log(imgUrl);
-    return writeFilePromise('dog-img.txt', imgUrl);
-  })
-  .then(() => console.log('Random dog image saved to file.'))
-  .catch((error) => {
+
+    await writeFilePromise('dog-img.txt', imgUrl);
+    console.log('Random dog image saved to file.');
+  } catch (error) {
     console.error(error);
-  });
+  }
+};
+
+getDogPic();
