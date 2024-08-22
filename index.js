@@ -5,6 +5,7 @@ const superagent = require('superagent');
 const filePath = `${__dirname}/dog.txt`;
 
 fs.readFile(filePath, (error, data) => {
+  if (error) throw new Error(error);
   console.log(`Breed: ${data}`);
 
   const breed = data.toString().trim();
@@ -14,3 +15,4 @@ fs.readFile(filePath, (error, data) => {
     console.log(res.body.message);
   });
 });
+s;
