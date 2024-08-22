@@ -12,7 +12,13 @@ fs.readFile(filePath, (error, data) => {
   const url = `https://dog.ceo/api/breed/${breed}/images/random`;
 
   superagent.get(url).end((err, res) => {
-    console.log(res.body.message);
+    if (err) return console.error(err.message);
+
+    const imgUrl = res.body.message;
+    console.log(imgUrl);
+
+    fs.writeFile('dog-img.txt', imgUrl, (error) => {
+      console.log('Random dog image saved to file.');
+    });
   });
 });
-s;
