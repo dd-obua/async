@@ -30,17 +30,21 @@ const getDogPic = async () => {
     const breed = data.toString().trim();
     const url = `https://dog.ceo/api/breed/${breed}/images/random`;
 
-    const res = await superagent.get(url);
-    const imgUrl = res.body.message;
-    console.log(imgUrl);
+    const res1Promise = superagent.get(url);
+    const res2Promise = superagent.get(url);
+    const res3Promise = superagent.get(url);
 
-    await writeFilePromise('dog-img.txt', imgUrl);
+    const all = await Promise.all([res1Promise, res2Promise, res3Promise]);
+    const imgs = all.map((img) => img.body.message).join('\n');
+    console.log(imgs);
+
+    await writeFilePromise('dog-img.txt', imgs);
     console.log('Random dog image saved to file.');
   } catch (error) {
     console.error(error);
   }
 
-  return '2: Ready';
+  return '2: Ready'; 
 };
 
 (async () => {
